@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Churn Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .error {
+            color: red;
+            display: none;
+            font-size: 0.9em;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .upload-container {
+            margin-top: 30px;
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .container, .upload-container {
+                padding: 15px;
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Customer Churn Prediction</h1>
+        <form id="prediction-form" action="/" method="post">
+            <label for="credit_score">Credit Score:</label>
+            <input type="number" step="any" name="credit_score" id="credit_score" required>
+            <span id="credit_score_error" class="error">Please enter a valid Credit Score.</span>
+
+            <label for="country">Country:</label>
+            <input type="text" name="country" id="country" required>
+
+            <label for="gender">Gender:</label>
+            <input type="text" name="gender" id="gender" required>
+
+            <label for="age">Age:</label>
+            <input type="number" name="age" id="age" required>
+
+            <label for="tenure">Tenure:</label>
+            <input type="number" name="tenure" id="tenure" required>
+
+            <label for="balance">Balance:</label>
+            <input type="number" step="any" name="balance" id="balance" required>
+
+            <label for="products_number">Number of Products:</label>
+            <input type="number" name="products_number" id="products_number" required>
+
+            <label for="credit_card">Credit Card (Yes/No):</label>
+            <input type="text" name="credit_card" id="credit_card" required>
+
+            <label for="active_member">Active Member (Yes/No):</label>
+            <input type="text" name="active_member" id="active_member" required>
+
+            <label for="estimated_salary">Estimated Salary:</label>
+            <input type="number" step="any" name="estimated_salary" id="estimated_salary" required>
+
+            <button type="submit">Predict</button>
+        </form>
+    </div>
+
+    <div class="upload-container">
+        <h2>Batch Prediction</h2>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <label for="file">Upload CSV file:</label>
+            <input type="file" id="file" name="file" required><br><br>
+            <button type="submit">Upload and Predict</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('prediction-form').addEventListener('submit', function(event) {
+            var valid = true;
+            
+            // Validation for Credit Score
+            var creditScore = document.getElementById('credit_score').value;
+            var creditScoreError = document.getElementById('credit_score_error');
+            
+            if (isNaN(creditScore) || creditScore <= 0) {
+                valid = false;
+                creditScoreError.style.display = 'block';
+            } else {
+                creditScoreError.style.display = 'none';
+            }
+
+            // Add validation for other fields
+            var fields = ['country', 'gender', 'age', 'tenure', 'balance', 'products_number', 'credit_card', 'active_member', 'estimated_salary'];
+            fields.forEach(function(field) {
+                var input = document.getElementById(field);
+                if (input.value.trim() === '') {
+                    valid = false;
+                    input.style.borderColor = 'red';
+                } else {
+                    input.style.borderColor = '#ccc';
+                }
+            });
+
+            if (!valid) {
+                event.preventDefault(); // Prevent form submission if validation fails
+            }
+        });
+    </script>
+</body>
+</html>
